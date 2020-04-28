@@ -20,9 +20,15 @@ x = 300  # rocket
 y = 500
 speed =7
 
-aX = 100  # asteroid
-aY = 100
-aSpeed = 15
+aX = [100, 300, 500]  # asteroid
+aY = [100, -100, -300]
+aSpeed = [15, 12, 9]
+
+score = 0 # очки
+try:
+    record = int(open("data.txt", "r").readline())
+except FileNotFoundError:
+    record = 0
 
 mX = 0  # mouse
 mY = 0
@@ -69,13 +75,23 @@ while game:
         if moveRight: x += speed
         if x < 50: x = 50
         if x > 550: x = 550
-        aY += aSpeed # двигает астероид вниз
-        if aY > 650: # перебрасывает астероид вверх
-            aY = -50
-            aX = randint(50, 550)
-        if aX+50 > x-50 and aX-50 < x+50 and aY+50 > y-50 and aY-50 < y+50:
-            menu = True
-            aY = -100
+        for i in range(len(aX)):
+            aY[i] += aSpeed[i] # двигает астероид вниз
+            if aY[i] > 650: # перебрасывает астероид вверх
+                aY[i] = -50
+                aX[i] = randint(50, 550)
+                score += 1
+        # касание астероида и корабля
+        for i in range(len(aX)):
+            if aX[i]+50 > x-50 and aX[i]-50 < x+50 and aY[i]+50 > y-50 and aY[i]-50 < y+50:
+                menu = True
+                if score > record:
+                    record = score
+                    f = open("data.txt", "w")
+                    f.write(str(record))
+                    f.close()
+                score = 0
+                aY = -100
     # звёздочки
     for i in range(len(stars["x"])):
         stars["y"][i] += stars["s"][i]
@@ -98,8 +114,11 @@ while game:
         image.create_polygon(x+20,y+20, x+10,y+30, x+10,y+50, x+30,y+50, x+30,y+30, fill='#888888')
         image.create_polygon(x-10,y-10, x,y, x+10,y-10, x,y+40, fill='#999999')
         # астероид
-        image.create_oval(aX-50, aY-50, aX+50, aY+50, fill="#a83a00", width=0)
-        image.create_oval(aX-40, aY-40, aX+20, aY-5, fill="#d17900", width=0)
+        for i in range(len(aX)):
+            image.create_oval(aX[i]-50, aY[i]-50, aX[i]+50, aY[i]+50, fill="#a83a00", width=0)
+            image.create_oval(aX[i]-40, aY[i]-40, aX[i]+20, aY[i]-5, fill="#d17900", width=0)
+        # очки
+        image.create_text(90,570, text="ОЧКИ: "+str(score), fill="#ffffff", font="Verdana 20")
     else:
         if mX > 125 and mX < 475 and mY > 300 and mY < 400:
             image.create_rectangle(125,300, 475,400, width=5, outline="white", fill="white")
@@ -117,6 +136,7 @@ while game:
             image.create_rectangle(125,450, 475,550, width=5, outline="white")
             image.create_text(300,500, text="ВЫХОД", justify=CENTER, fill="white", font="Verdana 40")
             
+        image.create_text(300,220, text="РЕКОРД: "+str(record), justify=CENTER, fill="white", font="Verdana 25")    
         image.create_text(300,130, text="АСТЕРОИД 1.0", justify=CENTER, fill="white", font="Verdana 50")
         mP = False
     image.update()
