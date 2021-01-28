@@ -4,6 +4,9 @@ from tkinter import *
 from time import sleep
 from random import randint
 
+# ВЫБОР ОС (1 - WINDOWS, 0 - LINUX)
+OS = 0
+
 # настройка окна
 window = Tk()
 window.title("Астероид 1.0")
@@ -16,6 +19,12 @@ menu = True
 moveLeft = False
 moveRight = False
 
+keysCodes = [
+  [113, 114, 9],
+  [37, 39, 27]
+]
+
+# 37 39 27
 x = 300  # rocket
 y = 500
 speed =7
@@ -42,17 +51,17 @@ stars = {
 
 # анализ клавиатуры
 def keyDown(event):
-    global moveLeft, moveRight, menu
+    global moveLeft, moveRight, menu, keysCodes
     key = event.keycode
-    print(key)
-    if key == 113: moveLeft = True
-    if key == 114: moveRight = True
-    if key == 9: menu = True
+    #print(key)
+    if key == keysCodes[OS][0]: moveLeft = True
+    if key == keysCodes[OS][1]: moveRight = True
+    if key == keysCodes[OS][2]: menu = True
 def keyUp(event):
     global moveLeft, moveRight
     key = event.keycode
-    if key == 113: moveLeft = False
-    if key == 114: moveRight = False
+    if key == keysCodes[OS][0]: moveLeft = False
+    if key == keysCodes[OS][1]: moveRight = False
 def mouseMove(event):
     global mX, mY
     mX = event.x
@@ -92,6 +101,9 @@ while game:
                     f.close()
                 score = 0
                 aY = -100
+                aX = [100, 300, 500]  # asteroid
+                aY = [100, -100, -300]
+                aSpeed = [15, 12, 9]
     # звёздочки
     for i in range(len(stars["x"])):
         stars["y"][i] += stars["s"][i]
