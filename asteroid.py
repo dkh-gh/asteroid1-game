@@ -9,7 +9,7 @@ OS = 0
 
 # настройка окна
 window = Tk()
-window.title("Астероид 1.1")
+window.title("Астероид 1.1.1")
 image = Canvas(window, width=600, height=600, bg="#222235")
 image.pack()
 
@@ -149,7 +149,7 @@ while game:
             image.create_text(300,500, text="ВЫХОД", justify=CENTER, fill="white", font="Verdana 40")
             
         image.create_text(300,220, text="РЕКОРД: "+str(record), justify=CENTER, fill="white", font="Verdana 25")    
-        image.create_text(300,130, text="АСТЕРОИД 1.0", justify=CENTER, fill="white", font="Verdana 50")
+        image.create_text(300,130, text="АСТЕРОИД 1.1.1", justify=CENTER, fill="white", font="Verdana 50")
         mP = False
     image.update()
     sleep(0.01)
