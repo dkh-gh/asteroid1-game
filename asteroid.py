@@ -9,7 +9,7 @@ OS = 0
 
 # настройка окна
 window = Tk()
-window.title("Астероид 1.0")
+window.title("Астероид 1.1")
 image = Canvas(window, width=600, height=600, bg="#222235")
 image.pack()
 
